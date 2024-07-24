@@ -1,5 +1,6 @@
 import React from 'react'
 import { Carousel } from 'react-bootstrap';
+import "./slider.css"
 
 import isa from "../img/isa.jpeg";
 import devops from "../img/devops.jpeg";
