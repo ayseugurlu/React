@@ -9,8 +9,8 @@ const RecipeCard = () => {
 
   return (
     <MainContainer>
-      {recipes.map(({recipe})=>(
-        <Cards key={recipes.calories}>
+      {recipes.map(({recipe},index)=>(
+        <Cards key={index}>
           <RecipeHeader>{recipe.label}</RecipeHeader>
           <RecipeImage src={recipe.image}/>
           <RecipeButton>Details</RecipeButton>

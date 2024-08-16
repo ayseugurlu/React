@@ -28,11 +28,32 @@ const RecipeProvider=({children})=>{
     const url = `https://api.edamam.com/search?q=${query}&app_id=${APP_ID}&app_key=${APP_KEY}&mealType=${mealType}`;
 
     const getData =async()=>{
-        const {data} = await axios.get(url)
-        // console.log(data.hits);
-        console.log(recipes);
+        setLoading(true)
+        try {
+            const {data} = await axios.get(url)
+            // console.log(data.hits);
+            console.log(recipes);
+    
+            setRecipes(data.hits)
 
-        setRecipes(data.hits)
+            
+            
+        } catch (error) {
+            setError(true)
+              
+        }finally{
+            setLoading(false)
+        }
+       
+    }
+
+
+    if(error){
+        return <p>Something Went Wrong...</p>
+    }
+
+    if(loading){
+        return <p>Loading...</p>
     }
 
 
