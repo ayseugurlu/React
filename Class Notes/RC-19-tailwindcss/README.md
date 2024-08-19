@@ -1,0 +1,1 @@
+https://medium.com/@anthonyharold67/tailwind-css-ve-react-kurulumu-17e1f121a67e
