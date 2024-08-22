@@ -1,25 +1,19 @@
-import React, { useContext, useState } from "react";
 import GoogleIcon from "../assets/icons/GoogleIcon";
+import React, { useContext, useState } from "react";
 import { AuthContextt } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-
 const Login = () => {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+ 
 
-  const[email,setEmail]=useState()
-  const[password,setPassword]=useState()
-  
+  const { signIn,signUpGoogle } = useContext(AuthContextt);
 
-  const {signIn}=useContext(AuthContextt)
-  
-
-  const handleSubmit=(e)=>{
-    e.preventDefault()
-   signIn(email,password)
-
-
-  }
-
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
+signIn(email,password)
+   
+  };
 
   return (
     <div className="overflow-hidden flex-1 h-screen justify-center items-center bg-[#23242a]">
@@ -28,42 +22,40 @@ const Login = () => {
           <h2 className="text-red-main text-2xl font-[500] text-center tracking-[0.1em] mb-3">
             Sign In
           </h2>
-          
+
           <div className="relative z-0 w-full mb-5 group">
             <input
-              className=" peer"
+              class=" peer"
               placeholder=" "
               name="floating_email"
               type="email"
               required
-              onChange={(e)=>setEmail(e.target.value)}
-            
+              onChange={(e) => setEmail(e.target.value)}
             />
             <label htmlFor="floating_email">Email</label>
           </div>
           <div className="relative z-0 w-full mb-5 group">
             <input
-              className=" peer"
+              class=" peer"
               placeholder=" "
               name="floating_password"
               type="password"
               required
-              onChange={(e)=>setPassword(e.target.value)}
-          
+              onChange={(e) => setPassword(e.target.value)}
             />
             <label htmlFor="floating_password">Password</label>
           </div>
 
           <div className="flex justify-between">
             <span
-              
+             
               className="py-3 font-[0.75em] cursor-pointer decoration-none text-gray-500 hover:text-[#ff4b45]"
             >
               Forgot Password
             </span>
             <Link
               className="py-3 font-[0.75em] cursor-pointer decoration-none text-gray-500 hover:text-[#ff4b45]"
-              to="/register"
+            to="/register"
             >
               Sign Up
             </Link>
@@ -75,7 +67,7 @@ const Login = () => {
           <button
             type="button"
             className="btn-danger flex justify-between text-center "
-          
+            onClick={()=>signUpGoogle()}
           >
             Continue with Google
             <GoogleIcon color="currentColor" />
