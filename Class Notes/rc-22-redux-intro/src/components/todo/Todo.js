@@ -1,4 +1,5 @@
 import React from "react";
+import "./Todo.css"
 import TodoInput from "./TodoInput";
 import TodoList from "./TodoList";
 import "./Todo.css";

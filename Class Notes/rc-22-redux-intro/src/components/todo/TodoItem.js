@@ -1,16 +1,20 @@
 import React from "react";
 import okLogo from "../../assets/ok.png";
 import deleteLogo from "../../assets/delete.png";
+import { sil } from "../../redux/actions/todoActions";
+import { useDispatch } from "react-redux";
 
-const TodoItem = () => {
 
+const TodoItem = ({gorev}) => {
+
+  const dispatch = useDispatch()
 
   return (
     <div
-     
+     style={{textDecoration: !gorev.completed ? "none" : "line-through",background: !gorev.completed ? "orange" : "gray", borderRadius:"1rem"}}
       className="todo-list"
     >
-      <h2 className="todoText">{}</h2>
+      <h2 className="todoText">{gorev.yazi}</h2>
       <div>
         <span>
           <img
@@ -25,7 +29,7 @@ const TodoItem = () => {
             src={deleteLogo}
             className="delete-logo"
             alt="delete logo"
-           
+           onClick={()=>dispatch(sil(gorev))}
           />
         </span>
       </div>

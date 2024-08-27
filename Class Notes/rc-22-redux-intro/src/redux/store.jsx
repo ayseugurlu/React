@@ -6,8 +6,8 @@ import counterReducer from "./reducers/counterReducer"
 
 
 const topluReducer = combineReducers({
-    counterReducer:counterReducer,
-    todoReducer:todoReducer
+    counterReducer: counterReducer,
+    todoReducer: todoReducer
 })
 
 
