@@ -13,6 +13,7 @@ const TodoInput = () => {
   
     //ekle fonk ihtiyac var
     dispatch(ekle(input))
+    setInput("")
 
   }
 
@@ -22,6 +23,7 @@ const TodoInput = () => {
         className="todo-input"
         type="text"
         placeholder="Add Todo"
+        value={input}
         onChange={(e)=>setInput(e.target.value)}
       />
       <button type="submit" className="add-button">

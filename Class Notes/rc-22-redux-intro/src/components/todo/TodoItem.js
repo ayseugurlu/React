@@ -1,7 +1,7 @@
 import React from "react";
 import okLogo from "../../assets/ok.png";
 import deleteLogo from "../../assets/delete.png";
-import { sil } from "../../redux/actions/todoActions";
+import { degistir, sil } from "../../redux/actions/todoActions";
 import { useDispatch } from "react-redux";
 
 
@@ -21,7 +21,7 @@ const TodoItem = ({gorev}) => {
             src={okLogo}
             className="ok-logo"
             alt="ok logo"
-     
+            onClick={()=>dispatch(degistir(gorev.id))}
           />
         </span>
         <span>
