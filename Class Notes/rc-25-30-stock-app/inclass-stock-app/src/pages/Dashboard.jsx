@@ -50,6 +50,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { Outlet } from 'react-router-dom';
 import MenuListItems from '../components/MenuListItems';
+import { Button } from '@mui/material';
+import useAuthCall from '../../../inclass-formik-yup/src/hooks/useAuthCall';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const drawerWidth = 240;
 
@@ -73,7 +76,7 @@ function Dashboard(props) {
     }
   };
 
- 
+ const {logout} = useAuthCall()
 
   // Remove this const when copying and pasting into your project.
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -86,6 +89,9 @@ function Dashboard(props) {
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
+          backgroundColor:"white",
+          color:"secondary.second",
+          borderRadius:"0.5rem"
         }}
       >
         <Toolbar>
@@ -98,9 +104,23 @@ function Dashboard(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+          <Typography variant="h6" noWrap component="div" sx={{flexGrow:1}}>
+            STOCK APP
           </Typography>
+
+          <Button color="inherit"
+         onClick={logout} sx={{"&:hover": {
+          backgroundColor:"secondary.second",
+          color:"white",
+          "& .MuiSvgIcon-root": {
+           color:"red"
+         }
+         },
+         "& .MuiSvgIcon-root": {
+          ml:1
+         },
+        //  marginLeft:"auto"
+         }}>Logout <LogoutIcon/></Button>
         </Toolbar>
       </AppBar>
       <Box
