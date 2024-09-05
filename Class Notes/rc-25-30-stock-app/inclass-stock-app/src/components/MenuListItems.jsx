@@ -11,7 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 
 const icon = (name) => `/assets/navbar/${name}.svg`;
@@ -50,16 +50,44 @@ const links = [
   },
 ];
 
+const btnStyle = {
+  color: "secondary.main",
+  borderRadius: "1rem",
+  transition:"all 0.6s ease-in-out",
+  "&:hover": {
+    backgroundColor: "secondary.main",
+    color: "white",
+  },
+}
+const selectedStyle = {
+  backgroundColor: "secondary.second",
+  color: "white",
+  borderRadius: "1rem",
+  "&:hover": {
+    backgroundColor: "secondary.main",
+    color: "white",
+  },
+}
+
 const MenuListItems = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+// const {pathname} =useLocation();
+
+  console.log(location)
+
   return (
     <div>
       <Toolbar />
-      <Divider />
+      {/* <Divider /> */}
       <List>
         {links.map((item, index) => (
           <ListItem key={item.title} disablePadding>
-            <ListItemButton onClick={() => navigate(item.url)}>
+            <ListItemButton
+              onClick={() => navigate(item.url)}
+              
+              sx={item.url === location.pathname ? selectedStyle : btnStyle}
+            >
               {/* <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon> */}
@@ -82,7 +110,7 @@ const MenuListItems = () => {
                   height: "24px",
                   mr: 2,
                   mask: `url(${item.icon}) no-repeat center / contain `,
-                  bgcolor: "red",
+                  bgcolor: "currentcolor",
                 }}
               />
               <ListItemText primary={item.title} />
