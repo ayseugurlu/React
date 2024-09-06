@@ -52,6 +52,7 @@ const useAuthCall = () => {
 
   const logout = async () => {
     dispatch(fetchStart());
+    console.log("fwbrtng");
     try {
 
       await axios(`${BASE_URL}auth/logout/`,{headers:{
