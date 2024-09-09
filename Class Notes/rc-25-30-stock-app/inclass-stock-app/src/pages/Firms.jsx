@@ -1,45 +1,83 @@
-import React, { useEffect } from 'react'
-import useStockCall from '../hooks/useStockCall'
-import { useSelector } from 'react-redux'
-import { Button, Container, Grid, Typography } from '@mui/material'
-import FirmCard from '../components/Cards/FirmCard'
-
+import React, { useEffect, useState } from "react";
+import useStockCall from "../hooks/useStockCall";
+import { useSelector } from "react-redux";
+import Container from "@mui/material/Container"
+import { Button, Grid, Typography } from "@mui/material";
+import FirmCard from "../components/Cards/FirmCard";
+import FirmModal from "../components/Modals/FirmModal";
+// import {useDispatch, useSelector} from "react-redux"
+// import { fetchStart, firmSuccess } from '../features/stockSlice'
+// import axios from "axios"
 
 const Firms = () => {
 
- const {getStockData} = useStockCall()
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => {
+    setOpen(false)
+    setInitialState(
+      {
+        name: "", phone: "", address: "", image: ""
+        
+      }
+    )
+  }
+  const [initialState,setInitialState] = useState({
+    name: "", phone: "", address: "", image: ""
+    
+  })
 
-const {firms} =useSelector(state => state.stock)
+  //? firms verileri bana birden fazla yerde lazım olduğu için fonksiyonu burada değil de her yerden erişebileceğim bir noktada tanımlıyorum. İçerisinde react hookları lazım olduğu için de bu ortak nokta en iyi custom hook olmuş oluyor.
+  // const dispatch = useDispatch()
+  // const token = useSelector(state=> state.auth.token)
 
- useEffect(() => {
-  // getFirms()
-  getStockData("firms")
- },[])
- 
-  return (
-    <Container>
-      <Typography align='center'
-       color="secondary.second"
-       variant='h4'
-       component="h1"
-       >
-        Firms
-      </Typography>
+  // const getFirms = async () => {
+  //   dispatch(fetchStart())
+  //   try {
+  //     const {data} = await axios(`${import.meta.env.VITE_BASE_URL}firms`, {
+  //       headers : {
+  //           Authorization:`Token ${token}`
+  //       }
+  //     })
+  //     console.log(data)
+  //     dispatch(firmSuccess(data))
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  const {
+    // getFirms,
+    getStockData,
+  } = useStockCall();
 
-      <Button variant='contained'>New Firm</Button>
+  const {firms} = useSelector(state=> state.stock)
+  console.log(firms)
+  useEffect(() => {
+    // getFirms()
+    getStockData("firms");
+  }, []);
 
-      <Grid container spacing={3} mt={2}>
-        {firms.map((firm)=> (
-           <Grid item xs={12} md={6} lg={4} xl={3} key={firm._id}>
-              <FirmCard/>
+  return <Container>
+    <Typography
+     align="center"
+     color="secondary.second"
+     variant="h4"
+     component="h1"
+    >
+      Firms
+    </Typography>
+    <Button variant="contained" onClick={handleOpen}>New Firm</Button>
+      {open && <FirmModal open={open} handleClose={handleClose} initialState={initialState}/>}
+    <Grid container spacing={2} mt={2}>
+      {
+        firms.map(firm => (
+          <Grid item xs={12} md={6} lg={4} xl={3} key={firm._id}>
+            <FirmCard {...firm} handleOpen={handleOpen} setInitialState={setInitialState}/>
           </Grid>
-        ))}
-       
-       
+        ))
+      }
+    </Grid>
+  </Container>;
+};
 
-       </Grid>
-    </Container>
-  )
-}
-
-export default Firms
+export default Firms;
