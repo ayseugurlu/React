@@ -7,43 +7,57 @@ const stockSlice = createSlice({
     loading: false,
     error: false,
     firms: [],
-    brands:[],
-    products:[],
-    sales:[],
-    purchases:[],
-    categories:[]
-    
-  },
+    brands: [],
+    products: [],
+    sales: [],
+    purchases: [],
+    categories: [],
+  }, //* endpoint değerlerimizi kullanarak statelerimizi isimlendirdik
   reducers: {
-    fetchStart: state => {
+    fetchStart: (state) => {
       state.loading = true;
       state.error = false;
     },
-    // firmsSuccess:(state,{payload}) => {
+    //   firmSuccess: (state,{payload}) => {
+    //      state.loading = false;
+    //      state.firms = payload.data;
+    //   },
+    //   brandSuccess: (state,{payload}) => {
     //     state.loading = false;
-    //     state.firms = payload.data
-    // },
-    // brandsSuccess:(state,{payload}) => {
-    //     state.loading = false;
-    //     state.brands = payload.data
-    // },
-    getStockSuccess:(state,{payload}) => {
-        state.loading = false;
-        state[payload.endpoint] = payload.stock
-    },
-    getProCatBrandSuccess: (state,{payload}) => {
+    //     state.brands = payload.data;
+    //  },
+    getStockSuccess: (state, { payload }) => {
       state.loading = false;
-      state.products= payload[0];
-      state.categories=payload[1];
-      state.brands=payload[2];
+      state[payload.endpoint] = payload.stock;
+      //* square bracket notation kullanarak gelen değere göre dinamik olarak statelerimiz güncelleyebildik.
+      // state["brands"] = payload.stock
+      // state["firms"] = payload.stock
     },
-    getPurSalesSuccess: (state,{payload}) => {
+    getProCatBrandSuccess: (state, { payload }) => {
       state.loading = false;
-      state.sales= payload[1].data;
-      state.purchases=payload[0].data;
-     
+      state.categories = payload[1];
+      state.products = payload[0];
+      state.brands = payload[2];
     },
-    fetchFail: state => {
+    getProPurcFirBrandsSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.purchases = payload[1].data;
+      state.firms = payload[2].data;
+      state.products = payload[0].data;
+      state.brands = payload[3].data;
+    },
+    getProSalBrandsSuccess: (state, { payload }) => {
+      state.loading = false;
+      state.products = payload[0].data;
+      state.brands = payload[1].data;
+      state.sales = payload[2].data;
+    },
+    getPurSalesSuccess: (state,{payload})=>{
+      state.loading = false;
+      state.sales = payload[1].data
+      state.purchases = payload[0].data
+    },
+    fetchFail: (state) => {
       state.loading = false;
       state.error = true;
     },
@@ -53,10 +67,12 @@ const stockSlice = createSlice({
 export const {
   fetchStart,
   fetchFail,
-  firmsSuccess,
-  brandsSuccess,
+  // firmSuccess,
+  // brandSuccess,
   getStockSuccess,
   getProCatBrandSuccess,
+  getProPurcFirBrandsSuccess,
+  getProSalBrandsSuccess,
   getPurSalesSuccess
 } = stockSlice.actions;
 export default stockSlice.reducer;

@@ -5,6 +5,8 @@ import {
   // brandSuccess,
   fetchStart,
   getProCatBrandSuccess,
+  getProPurcFirBrandsSuccess,
+  getProSalBrandsSuccess,
   getPurSalesSuccess,
   // firmSuccess,
   getStockSuccess,
@@ -79,8 +81,8 @@ const useStockCall = () => {
       //     },
       //   })
       await axiosWithToken.delete(`${endpoint}/${id}`)
+      toastSuccessNotify(`${endpoint} is successfully deleted!`)
         // getStockData(endpoint)
-        toastSuccessNotify(`${endpoint} is successfully deleted!`)
     } catch (error) {
       console.log(error)
       dispatch(fetchFail())
@@ -98,7 +100,7 @@ const useStockCall = () => {
 
     } catch (error) {
       console.log(error);
-      console.log(error.response.data.message);
+      console.log(error.response.data.message)
       toastErrorNotify(error.response.data.message)
       dispatch(fetchFail())
     }finally{
@@ -111,7 +113,6 @@ const useStockCall = () => {
     try {
       const {data} = await axiosWithToken.put(`${endpoint}/${info._id}`,info)
       toastSuccessNotify(`${endpoint} is successfully updated!`)
-
     } catch (error) {
       console.log(error);
       dispatch(fetchFail())
@@ -120,6 +121,8 @@ const useStockCall = () => {
     }
   };
 
+  //!Promise.all()
+  //* eş zamanlı istek atma. aynı anda istek atılıyor aynı anda responselar gelmeye başlıyor. Zaman noktasında da avantajlı. En uzun hangi istek sürdüyse veriler ondan sonra valid olur. Birbirine bağımlı isteklerde en büyük avantajı hata durumu. İsteklerden biri bile hatalı olursa hepsi iptal olur.
   const getProCatBrand = async () => {
     dispatch(fetchStart());
     try {
@@ -138,9 +141,48 @@ const useStockCall = () => {
       dispatch(fetchFail())
     }
   }
-
-  const getPurSales = async () => {
+  const getProSalBrands = async () => {
     dispatch(fetchStart());
+    try {
+      // const { data } = await axiosWithToken.get(`stock/${url}/`);
+      const [products, brands, sales] = await Promise.all([
+        axiosWithToken.get(`products/`),
+        axiosWithToken.get(`brands/`),
+        axiosWithToken.get(`sales/`),
+      ]);
+
+      dispatch(
+        getProSalBrandsSuccess([products?.data, brands?.data, sales?.data])
+      );
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
+  const getProPurcFirBrands = async () => {
+    dispatch(fetchStart());
+    try {
+      // const { data } = await axiosWithToken.get(`stock/${url}/`);
+      const [products, purchases, firms, brands] = await Promise.all([
+        axiosWithToken.get(`products/`),
+        axiosWithToken.get(`purchases/`),
+        axiosWithToken.get(`firms/`),
+        axiosWithToken.get(`brands/`),
+      ]);
+
+      dispatch(
+        getProPurcFirBrandsSuccess([
+          products?.data,
+          purchases?.data,
+          firms?.data,
+          brands?.data,
+        ])
+      );
+    } catch (error) {
+      dispatch(fetchFail());
+    }
+  };
+  const getPurSales = async () => {
+    dispatch(fetchStart())
     try {
       const [purchases,sales] = await Promise.all([
         axiosWithToken("purchases"),
@@ -153,7 +195,6 @@ const useStockCall = () => {
   }
 
 
-
   return {
     // getFirms,
     // getBrands,
@@ -162,6 +203,8 @@ const useStockCall = () => {
     postStockData,
     putStockData,
     getProCatBrand,
+    getProSalBrands,
+    getProPurcFirBrands,
     getPurSales
   };
 };
