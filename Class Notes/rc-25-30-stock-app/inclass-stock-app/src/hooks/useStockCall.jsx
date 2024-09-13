@@ -5,11 +5,13 @@ import {
   // brandSuccess,
   fetchStart,
   getProCatBrandSuccess,
+  getPurSalesSuccess,
   // firmSuccess,
   getStockSuccess,
 } from "../features/stockSlice";
 import axios from "axios";
 import useAxios from "./useAxios";
+import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 
 const useStockCall = () => {
   const dispatch = useDispatch();
@@ -78,6 +80,7 @@ const useStockCall = () => {
       //   })
       await axiosWithToken.delete(`${endpoint}/${id}`)
         // getStockData(endpoint)
+        toastSuccessNotify(`${endpoint} is successfully deleted!`)
     } catch (error) {
       console.log(error)
       dispatch(fetchFail())
@@ -91,9 +94,12 @@ const useStockCall = () => {
     dispatch(fetchStart());
     try {
       const {data} = await axiosWithToken.post(endpoint,info)
+      toastSuccessNotify(`${endpoint} is successfully recorded!`)
 
     } catch (error) {
       console.log(error);
+      console.log(error.response.data.message);
+      toastErrorNotify(error.response.data.message)
       dispatch(fetchFail())
     }finally{
       getStockData(endpoint)
@@ -104,6 +110,7 @@ const useStockCall = () => {
     dispatch(fetchStart());
     try {
       const {data} = await axiosWithToken.put(`${endpoint}/${info._id}`,info)
+      toastSuccessNotify(`${endpoint} is successfully updated!`)
 
     } catch (error) {
       console.log(error);
@@ -132,6 +139,19 @@ const useStockCall = () => {
     }
   }
 
+  const getPurSales = async () => {
+    dispatch(fetchStart());
+    try {
+      const [purchases,sales] = await Promise.all([
+        axiosWithToken("purchases"),
+        axiosWithToken("sales")
+      ])
+      dispatch(getPurSalesSuccess([purchases.data,sales.data]))
+    } catch (error) {
+      dispatch(fetchFail())
+    }
+  }
+
 
 
   return {
@@ -141,7 +161,8 @@ const useStockCall = () => {
     deleteStockData,
     postStockData,
     putStockData,
-    getProCatBrand
+    getProCatBrand,
+    getPurSales
   };
 };
 
